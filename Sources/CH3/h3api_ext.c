@@ -27,6 +27,12 @@ H3Error maxPolygonToCellsSizeSimple(const LatLng* verts, int numVerts, int res, 
     return maxPolygonToCellsSize(&polygon, res, flags, out);
 }
 
+H3Error maxPolygonToCellsSizeExperimentalSimple(const LatLng* verts, int numVerts, int res, uint32_t flags, int64_t* out) {
+    GeoLoop loop = { .numVerts = numVerts, .verts = (LatLng*)verts };
+    GeoPolygon polygon = { .geoloop = loop, .numHoles = 0, .holes = NULL };
+    return maxPolygonToCellsSizeExperimental(&polygon, res, flags, out);
+}
+
 H3Error polygonToCellsExperimentalSimple(
     const LatLng* verts,
     int numVerts,

@@ -14,6 +14,7 @@ H3Error polygonToCellsExperimentalSimple(
     int64_t size,
     H3Index* out
 );
+H3Error maxPolygonToCellsSizeExperimentalSimple(const LatLng* verts, int numVerts, int res, uint32_t flags, int64_t* out);
 int cellsToPolygonFlat(
     const H3Index* cells,
     int numCells,
