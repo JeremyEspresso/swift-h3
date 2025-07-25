@@ -1,9 +1,10 @@
 import CH3
 
-public func gridDistance(origin: UInt64, destination: UInt64) -> Int64 {
+public func gridDistance(origin: UInt64, destination: UInt64) throws -> Int64 {
     var distance: Int64 = 0
     let err = CH3.gridDistance(origin, destination, &distance)
-    precondition(err == 0, "gridDistance failed with error \(err)")
+
+    try H3ErrorCode.throwOnError(err)
     
     return distance
 }
