@@ -1,4 +1,5 @@
 import CH3
+import CoreLocation
 
 public func degsToRads(degrees: Double) -> Double {
     return CH3.degsToRads(degrees)
@@ -6,6 +7,12 @@ public func degsToRads(degrees: Double) -> Double {
 
 public func radsToDegs(radians: Double) -> Double {
     return CH3.radsToDegs(radians)
+}
+
+public func radsToDegs(latLng: LatLng) -> CLLocationCoordinate2D {
+    let latDeg = CH3.radsToDegs(latLng.lat)
+    let lngDeg = CH3.radsToDegs(latLng.lng)
+    return CLLocationCoordinate2D(latitude: latDeg, longitude: lngDeg)
 }
 
 public func getHexagonAreaAvgKm2(resolution: Int) throws -> Double {

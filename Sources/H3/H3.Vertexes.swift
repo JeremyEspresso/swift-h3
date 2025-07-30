@@ -1,4 +1,5 @@
 import CH3
+import CoreLocation
 
 public func cellToVertex(cell: UInt64, vertexNum: Int) throws -> UInt64 {
     var vertex: UInt64 = 0
@@ -18,12 +19,11 @@ public func cellToVertices(cell: UInt64) throws -> [UInt64] {
     return output.filter { $0 != 0 }
 }
 
-public func vertexToLatLng(vertex: UInt64) throws -> LatLng {
+public func vertexToLatLng(vertex: UInt64) throws -> CLLocationCoordinate2D {
     var coord = LatLng(lat: 0, lng: 0)
     let err = CH3.vertexToLatLng(vertex, &coord)
     try H3ErrorCode.throwOnError(err)
-
-    return coord
+    return radsToDegs(latLng: coord)
 }
 
 public func isValidVertex(vertex: UInt64) throws -> Bool {

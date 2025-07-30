@@ -1,4 +1,5 @@
 import CH3
+import CoreLocation
 
 public func areNeighborCells(a: UInt64, b: UInt64) throws -> Bool {
     var isNeighbor: Int32 = 0
@@ -60,7 +61,7 @@ public func originToDirectedEdges(origin: UInt64) throws -> [UInt64] {
     return edges.filter { $0 != 0 }
 }
 
-public func directedEdgeBoundary(edge: UInt64) throws -> [LatLng] {
+public func directedEdgeBoundary(edge: UInt64) throws -> [CLLocationCoordinate2D] {
     var boundary = CellBoundary()
     let err = CH3.directedEdgeToBoundary(edge, &boundary)
     try H3ErrorCode.throwOnError(err)
@@ -70,5 +71,5 @@ public func directedEdgeBoundary(edge: UInt64) throws -> [LatLng] {
         return Array(buffer.prefix(Int(boundary.numVerts)))
     }
 
-    return coords
+    return coords.map({c in radsToDegs(latLng: c)})
 }
