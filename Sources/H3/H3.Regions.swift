@@ -5,14 +5,17 @@ public func polygonToCells(
     boundary: [CLLocationCoordinate2D],
     resolution: Int,
     flags: UInt32
-) -> [UInt64] {
+) throws -> [UInt64] {
     let latLngs = boundary.map {
-        LatLng(lat: CH3.degsToRads($0.latitude), lng: CH3.degsToRads($0.longitude))
+        LatLng(
+            lat: CH3.degsToRads($0.latitude), lng: CH3.degsToRads($0.longitude))
     }
 
     var maxSize: Int64 = 0
     let sizeErr = latLngs.withUnsafeBufferPointer { buf in
-        CH3.maxPolygonToCellsSizeSimple(buf.baseAddress, Int32(buf.count), Int32(resolution), flags, &maxSize)
+        CH3.maxPolygonToCellsSizeSimple(
+            buf.baseAddress, Int32(buf.count), Int32(resolution), flags,
+            &maxSize)
     }
     precondition(sizeErr == 0, "maxPolygonToCellsSize failed")
 
@@ -31,8 +34,8 @@ public func polygonToCells(
             )
         }
     }
-    precondition(err == 0, "polyfillWithFlags failed with error \(err)")
-    
+    try H3ErrorCode.throwOnError(err)
+
     return Array(output.prefix(Int(outSize)))
 }
 
@@ -40,17 +43,20 @@ public func maxPolygonToCellsSize(
     boundary: [CLLocationCoordinate2D],
     resolution: Int,
     flags: UInt32
-) -> Int {
+) throws -> Int {
     let latLngs = boundary.map {
-        LatLng(lat: CH3.degsToRads($0.latitude), lng: CH3.degsToRads($0.longitude))
+        LatLng(
+            lat: CH3.degsToRads($0.latitude), lng: CH3.degsToRads($0.longitude))
     }
 
     var size: Int64 = 0
     let err = latLngs.withUnsafeBufferPointer { buf in
-        CH3.maxPolygonToCellsSizeSimple(buf.baseAddress, Int32(buf.count), Int32(resolution), flags, &size)
+        CH3.maxPolygonToCellsSizeSimple(
+            buf.baseAddress, Int32(buf.count), Int32(resolution), flags, &size)
     }
-    precondition(err == 0 && size >= 0, "maxPolygonToCellsSize failed with error \(err)")
-    
+    precondition(
+        err == 0 && size >= 0, "maxPolygonToCellsSize failed with error \(err)")
+
     return Int(size)
 }
 
@@ -58,15 +64,18 @@ public func polygonToCellsExperimental(
     boundary: [CLLocationCoordinate2D],
     resolution: Int,
     containmentMode: PolygonContainment = .center
-) -> [UInt64] {
+) throws -> [UInt64] {
     let latLngs = boundary.map {
-        LatLng(lat: CH3.degsToRads($0.latitude), lng: CH3.degsToRads($0.longitude))
+        LatLng(
+            lat: CH3.degsToRads($0.latitude), lng: CH3.degsToRads($0.longitude))
     }
 
     // Get max size first
     var maxSize: Int64 = 0
     let sizeErr = latLngs.withUnsafeBufferPointer { buf in
-        CH3.maxPolygonToCellsSizeSimple(buf.baseAddress, Int32(buf.count), Int32(resolution), containmentMode.rawValue, &maxSize)
+        CH3.maxPolygonToCellsSizeSimple(
+            buf.baseAddress, Int32(buf.count), Int32(resolution),
+            containmentMode.rawValue, &maxSize)
     }
     precondition(sizeErr == 0, "maxPolygonToCellsSize failed")
 
@@ -85,11 +94,11 @@ public func polygonToCellsExperimental(
         }
     }
     precondition(err == 0, "polygonToCellsExperimental failed")
-    
+
     return output.filter { $0 != 0 }
 }
 
-public func cellsToLinkedMultiPolygon(cells: [UInt64]) -> [LatLng] {
+public func cellsToLinkedMultiPolygon(cells: [UInt64]) throws -> [LatLng] {
     var polygon = LinkedGeoPolygon()
     let err = cells.withUnsafeBufferPointer {
         CH3.cellsToLinkedMultiPolygon($0.baseAddress, Int32($0.count), &polygon)

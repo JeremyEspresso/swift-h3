@@ -17,6 +17,9 @@ public enum H3ErrorCode: Error {
     case MemoryBounds
     case OptionInvalid
 
+    // Additional error when size is invalid
+    case SizeInvalid
+
     static func fromH3(_ code: UInt32) -> Error {
         switch code {
         case E_SUCCESS.rawValue:
