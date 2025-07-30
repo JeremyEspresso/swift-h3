@@ -3,8 +3,7 @@ import CoreLocation
 
 public func polygonToCells(
     boundary: [CLLocationCoordinate2D],
-    resolution: Int,
-    flags: UInt32
+    resolution: Int
 ) throws -> [UInt64] {
     let latLngs = boundary.map {
         LatLng(
@@ -14,7 +13,7 @@ public func polygonToCells(
     var maxSize: Int64 = 0
     let sizeErr = latLngs.withUnsafeBufferPointer { buf in
         CH3.maxPolygonToCellsSizeSimple(
-            buf.baseAddress, Int32(buf.count), Int32(resolution), flags,
+            buf.baseAddress, Int32(buf.count), Int32(resolution), 0,
             &maxSize)
     }
     precondition(sizeErr == 0, "maxPolygonToCellsSize failed")
@@ -28,7 +27,7 @@ public func polygonToCells(
                 vertBuf.baseAddress,
                 Int32(latLngs.count),
                 Int32(resolution),
-                flags,
+                0,
                 outBuf.baseAddress,
                 &outSize
             )
@@ -41,8 +40,7 @@ public func polygonToCells(
 
 public func maxPolygonToCellsSize(
     boundary: [CLLocationCoordinate2D],
-    resolution: Int,
-    flags: UInt32
+    resolution: Int
 ) throws -> Int {
     let latLngs = boundary.map {
         LatLng(
@@ -52,7 +50,7 @@ public func maxPolygonToCellsSize(
     var size: Int64 = 0
     let err = latLngs.withUnsafeBufferPointer { buf in
         CH3.maxPolygonToCellsSizeSimple(
-            buf.baseAddress, Int32(buf.count), Int32(resolution), flags, &size)
+            buf.baseAddress, Int32(buf.count), Int32(resolution), 0, &size)
     }
     precondition(
         err == 0 && size >= 0, "maxPolygonToCellsSize failed with error \(err)")
