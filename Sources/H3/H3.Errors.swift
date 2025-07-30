@@ -104,3 +104,13 @@ extension H3ErrorCode: CustomStringConvertible {
         }
     }
 }
+
+public func describeH3Error(err: Int32) throws -> String {
+    let error: H3Error = UInt32(err)
+
+    guard let cStr = CH3.describeH3Error(error) else {
+        return "Unknown error"
+    }
+
+    return String(cString: cStr)
+}
