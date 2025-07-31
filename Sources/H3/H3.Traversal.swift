@@ -5,7 +5,6 @@ public func gridDistance(origin: UInt64, destination: UInt64) throws -> Int64 {
     let err = CH3.gridDistance(origin, destination, &distance)
 
     try H3ErrorCode.throwOnError(err)
-
     return distance
 }
 

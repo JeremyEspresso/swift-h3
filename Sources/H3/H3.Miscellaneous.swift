@@ -8,17 +8,17 @@ public func radsToDegs(radians: Double) -> Double {
     return CH3.radsToDegs(radians)
 }
 
-public func getHexagonAreaAvgKm2(res: Int32) throws -> Double {
+public func getHexagonAreaAvgKm2(resolution: Int) throws -> Double {
     var area: Double = 0
-    let err = CH3.getHexagonAreaAvgKm2(res, &area)
+    let err = CH3.getHexagonAreaAvgKm2(Int32(resolution), &area)
     try H3ErrorCode.throwOnError(err)
 
     return area
 }
 
-public func getHexagonAreaAvgM2(res: Int32) throws -> Double {
+public func getHexagonAreaAvgM2(resolution: Int) throws -> Double {
     var area: Double = 0
-    let err = CH3.getHexagonAreaAvgM2(res, &area)
+    let err = CH3.getHexagonAreaAvgM2(Int32(resolution), &area)
     try H3ErrorCode.throwOnError(err)
 
     return area
@@ -48,17 +48,17 @@ public func cellAreaM2(cell: UInt64) throws -> Double {
     return area
 }
 
-public func getHexagonEdgeLengthAvgKm(res: Int32) throws -> Double {
+public func getHexagonEdgeLengthAvgKm(resolution: Int) throws -> Double {
     var length: Double = 0
-    let err = CH3.getHexagonEdgeLengthAvgKm(res, &length)
+    let err = CH3.getHexagonEdgeLengthAvgKm(Int32(resolution), &length)
     try H3ErrorCode.throwOnError(err)
 
     return length
 }
 
-public func getHexagonEdgeLengthAvgM(res: Int32) throws -> Double {
+public func getHexagonEdgeLengthAvgM(resolution: Int) throws -> Double {
     var length: Double = 0
-    let err = CH3.getHexagonEdgeLengthAvgM(res, &length)
+    let err = CH3.getHexagonEdgeLengthAvgM(Int32(resolution), &length)
     try H3ErrorCode.throwOnError(err)
 
     return length
@@ -88,9 +88,9 @@ public func edgeLengthRads(edge: UInt64) throws -> Double {
     return length
 }
 
-public func getNumCells(res: Int32) throws -> Int64 {
+public func getNumCells(resolution: Int) throws -> Int64 {
     var count: Int64 = 0
-    let err = CH3.getNumCells(res, &count)
+    let err = CH3.getNumCells(Int32(resolution), &count)
     try H3ErrorCode.throwOnError(err)
 
     return count
@@ -111,10 +111,10 @@ public func getRes0CellCount() throws -> Int {
     return Int(CH3.res0CellCount())
 }
 
-public func getPentagons(res: Int32) throws -> [UInt64] {
+public func getPentagons(resolution: Int) throws -> [UInt64] {
     var output = [UInt64](repeating: 0, count: try pentagonCount())
     let err = output.withUnsafeMutableBufferPointer {
-        CH3.getPentagons(res, $0.baseAddress)
+        CH3.getPentagons(Int32(resolution), $0.baseAddress)
     }
     try H3ErrorCode.throwOnError(err)
 
