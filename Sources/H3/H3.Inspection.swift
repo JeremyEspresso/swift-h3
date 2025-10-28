@@ -1,11 +1,11 @@
 import CH3
 
-public func getResolution(cell: UInt64) -> Int32 {
-    return CH3.getResolution(cell)
+public func getResolution(cell: UInt64) -> Int {
+    return Int(CH3.getResolution(cell))
 }
 
-public func getBaseCellNumber(cell: UInt64) -> Int32 {
-    return CH3.getBaseCellNumber(cell)
+public func getBaseCellNumber(cell: UInt64) -> Int {
+    return Int(CH3.getBaseCellNumber(cell))
 }
 
 public func stringToH3(cellAsString: String) throws -> UInt64 {
