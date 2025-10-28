@@ -13,6 +13,10 @@ public func latLngToCell(latitude: Double, longitude: Double, resolution: Int)
     return index
 }
 
+public func latLngToCell(latLng: CLLocationCoordinate2D, resolution: Int) throws -> UInt64 {
+    return try latLngToCell(latitude: latLng.latitude, longitude: latLng.longitude, resolution: resolution)
+}
+
 public func cellToLatLng(cell: UInt64) throws -> CLLocationCoordinate2D {
     var coords = LatLng(lat: 0, lng: 0)
     let error = CH3.cellToLatLng(cell, &coords)
