@@ -16,7 +16,7 @@ public func polygonToCells(
             buf.baseAddress, Int32(buf.count), Int32(resolution), 0,
             &maxSize)
     }
-    precondition(sizeErr == 0, "maxPolygonToCellsSize failed")
+    try H3ErrorCode.throwOnError(sizeErr)
 
     var output = [UInt64](repeating: 0, count: Int(maxSize))
     var outSize: Int32 = Int32(maxSize)

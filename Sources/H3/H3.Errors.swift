@@ -16,6 +16,7 @@ public enum H3ErrorCode: Error {
     case MemoryAlloc
     case MemoryBounds
     case OptionInvalid
+    case SizeError
 
     // Additional error when size is invalid
     case SizeInvalid
